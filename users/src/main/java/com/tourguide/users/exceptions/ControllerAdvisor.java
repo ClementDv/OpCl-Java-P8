@@ -40,7 +40,7 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
     }
 
     protected ResponseEntity<ErrorResponse> response(ErrorResponse errorResponse) {
-        HttpStatus status = HttpStatus.resolve(errorResponse.getStatus());
+        HttpStatus status =  HttpStatus.valueOf(errorResponse.getStatus());
         return new ResponseEntity<>(errorResponse, new HttpHeaders(), status);
     }
 }
