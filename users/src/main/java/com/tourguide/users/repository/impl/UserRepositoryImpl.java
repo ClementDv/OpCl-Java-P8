@@ -38,7 +38,10 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User findUserByUserName(String userName) {
-        return cloneUser(userMap.get(userName));
+        if (userMap.containsKey(userName)) {
+            return cloneUser(userMap.get(userName));
+        }
+        return null;
     }
 
     @Override

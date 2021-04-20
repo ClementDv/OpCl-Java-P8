@@ -1,20 +1,20 @@
 package com.tourguide.users.service.impl;
 
 import com.tourguide.users.dto.LocationDto;
+import com.tourguide.users.dto.UserRewardDto;
 import com.tourguide.users.dto.VisitedLocationDto;
 import com.tourguide.users.entity.User;
-import com.tourguide.users.mapper.LocationMapper;
+import com.tourguide.users.exceptions.InvalidUserNameException;
+import com.tourguide.users.exceptions.UserNotFoundException;
+import com.tourguide.users.mapper.UserRewardMapper;
 import com.tourguide.users.mapper.VisitedLocationMapper;
 import com.tourguide.users.repository.UserRepository;
 import com.tourguide.users.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
-import javax.swing.plaf.synth.SynthTextAreaUI;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -23,22 +23,19 @@ public class UserServiceImpl implements UserService {
 
     private final VisitedLocationMapper visitedLocationMapper;
 
-    private final LocationMapper locationMapper;
+    private final UserRewardMapper userRewardMapper;
 
-    public UserServiceImpl(UserRepository userRepository, VisitedLocationMapper visitedLocationMapper, LocationMapper locationMapper) {
+
+    public UserServiceImpl(UserRepository userRepository, VisitedLocationMapper visitedLocationMapper, UserRewardMapper userRewardMapper) {
         this.userRepository = userRepository;
         this.visitedLocationMapper = visitedLocationMapper;
-        this.locationMapper = locationMapper;
+        this.userRewardMapper = userRewardMapper;
     }
 
     @Override
     public VisitedLocationDto getLastVisitedLocation(String userName) {
-        if (!StringUtils.isBlank(userName)) {
-            User user = userRepository.findUserByUserName(userName);
+            User user = getUserByUsername(userName);
             return visitedLocationMapper.toLastVisitedLocationDto(user);
-        }
-        // TODO: 15/04/2021 "Add exception UserNameIsEmpty!"
-        return null;
     }
 
     @Override
@@ -46,8 +43,30 @@ public class UserServiceImpl implements UserService {
         List<User> userList = userRepository.getAllUser();
         Map<UUID, LocationDto> mapUserLocation = new HashMap<>();
         userList.forEach(
-        e -> mapUserLocation.put(
+                e -> mapUserLocation.put(
                         e.getUserId(), visitedLocationMapper.toLastVisitedLocationDto(e).getLocation()));
         return mapUserLocation;
+    }
+
+    @Override
+    public List<UserRewardDto> getUserRewards(String userName) {
+            User user = getUserByUsername(userName);
+            List<UserRewardDto> userRewardDtoList = new ArrayList<>();
+            if (!CollectionUtils.isEmpty(user.getUserRewards())) {
+                user.getUserRewards().forEach(e -> userRewardDtoList.add(userRewardMapper.toDto(e)));
+                return userRewardDtoList;
+            }
+            return null;
+    }
+
+    private User getUserByUsername(String userName) {
+        if (!StringUtils.isBlank(userName)) {
+            User user = userRepository.findUserByUserName(userName);
+            if (!Objects.isNull(user)) {
+                return user;
+            }
+            throw new UserNotFoundException(userName);
+        }
+        throw new InvalidUserNameException("UserName is empty or null");
     }
 }

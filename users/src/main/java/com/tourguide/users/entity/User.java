@@ -19,5 +19,6 @@ public class User {
     private String phoneNumber;
     private String emailAddress;
     private Date latestLocationTimestamp;
+    private List<UserReward> userRewards;
     private List<VisitedLocation> visitedLocations;
 }

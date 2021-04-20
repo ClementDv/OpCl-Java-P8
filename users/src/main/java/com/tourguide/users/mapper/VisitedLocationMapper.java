@@ -10,7 +10,6 @@ import java.util.List;
 
 @Mapper(componentModel = "spring", uses = {LocationMapper.class})
 public abstract class VisitedLocationMapper {
-
     abstract VisitedLocation fromDto(VisitedLocationDto visitedLocationDto);
 
     abstract VisitedLocationDto toDto(VisitedLocation visitedLocation);

@@ -1,6 +1,7 @@
 package com.tourguide.users.controller;
 
 import com.tourguide.users.dto.LocationDto;
+import com.tourguide.users.dto.UserRewardDto;
 import com.tourguide.users.dto.VisitedLocationDto;
 import com.tourguide.users.entity.Location;
 import com.tourguide.users.service.UserService;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -33,5 +35,10 @@ public class TourGuideController {
     @GetMapping("/getAllCurrentLocations")
     public Map<UUID, LocationDto> getAllCurrentLocations() {
         return userService.getAllCurrentLocation();
+    }
+
+    @GetMapping("/getRewards")
+    public List<UserRewardDto> getRewards(@RequestParam String userName) {
+        return userService.getUserRewards(userName);
     }
 }
