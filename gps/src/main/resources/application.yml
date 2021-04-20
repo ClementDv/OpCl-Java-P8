@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: gps-app
+
+server:
+  port : 8082

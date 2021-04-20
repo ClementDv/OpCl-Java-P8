@@ -1,37 +1,75 @@
-plugins {
-	id 'org.springframework.boot' version '2.4.4'
-	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-	id 'java'
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "io.spring.gradle:dependency-management-plugin:1.0.11.RELEASE"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:2.4.3"
+    }
 }
 
-group = 'com'
+def libsPath = "${projectDir}/libs"
+
+subprojects {
+
+    apply plugin: 'java'
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+
+    repositories {
+        mavenCentral()
+        flatDir {
+            dirs "${libsPath}"
+        }
+    }
+
+    apply plugin: 'io.spring.dependency-management'
+    dependencyManagement {
+        dependencies {
+            dependency "org.projectlombok:lombok:1.18.16"
+            dependency "org.mapstruct:mapstruct:1.4.2.Final"
+            dependency "org.mapstruct:mapstruct-processor:1.4.2.Final"
+            dependency "org.junit.jupiter:junit-jupiter-api:5.3.1"
+            dependency "org.junit.jupiter:junit-jupiter-engine:5.3.1"
+        }
+    }
+
+    apply plugin: 'org.springframework.boot'
+
+    dependencies {
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+        testCompileOnly 'org.projectlombok:lombok'
+        testAnnotationProcessor 'org.projectlombok:lombok'
+
+        implementation 'org.mapstruct:mapstruct'
+        annotationProcessor 'org.mapstruct:mapstruct-processor'
+
+        annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+        testImplementation 'org.junit.jupiter:junit-jupiter-api'
+        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+
+    apply plugin: 'jacoco'
+    jacoco {
+        toolVersion = '0.8.6'
+    }
+    jacocoTestReport {
+        reports {
+            xml.enabled true
+            csv.enabled false
+            html.destination file("${buildDir}/jacocoHtml")
+        }
+    }
+    test.finalizedBy jacocoTestReport
+}
+
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
-
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
-}
-
-repositories {
-	mavenCentral()
-	flatDir {
-		dirs 'libs'
-	}
-}
-
-dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
-	compile(name:'gpsUtil', ext:'jar')
-	compile(name:'RewardCentral', ext:'jar')
-	compile(name:'TripPricer', ext:'jar')
-}
-
-test {
-	useJUnitPlatform()
-}

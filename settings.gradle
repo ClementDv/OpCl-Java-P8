@@ -1,1 +1,6 @@
 rootProject.name = 'tourguide'
+
+include 'gps'
+include 'rewards'
+include 'users'
+
