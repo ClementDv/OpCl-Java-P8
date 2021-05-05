@@ -1,4 +1,4 @@
-package com.tourguide.gps.model;
+package com.tourguide.gps.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,8 +12,8 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class VisitedLocation {
+public class VisitedLocationDto {
     private UUID userId;
-    private Location location;
+    private LocationDto location;
     private Date timeVisited;
 }

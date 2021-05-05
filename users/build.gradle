@@ -3,6 +3,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-json'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation 'org.apache.commons:commons-lang3:3.6'
+    implementation 'org.apache.commons:commons-lang3'
+    implementation 'org.javamoney:moneta'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    implementation name: 'TripPricer'
 }

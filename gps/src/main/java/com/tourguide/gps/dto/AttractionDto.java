@@ -1,4 +1,4 @@
-package com.tourguide.users.dto;
+package com.tourguide.gps.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

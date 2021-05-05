@@ -1,4 +1,4 @@
-package com.tourguide.gps.model;
+package com.tourguide.gps.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Location {
+public class LocationDto {
     private double longitude;
     private double latitude;
 }

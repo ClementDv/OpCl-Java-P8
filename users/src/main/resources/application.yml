@@ -1,2 +1,12 @@
 server:
-  port : 8080
+  port: 8080
+
+app:
+  gps-service:
+    url: "http://localhost:8082"
+  reward-service:
+    url: "http://localhost:8081"
+  trip-pricer-service:
+    tripPricerApiKey: "test-server-api-key"
+  tracker:
+    proximityDistance: 200D

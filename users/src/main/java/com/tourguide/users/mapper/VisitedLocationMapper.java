@@ -9,12 +9,12 @@ import org.springframework.util.CollectionUtils;
 import java.util.List;
 
 @Mapper(componentModel = "spring", uses = {LocationMapper.class})
-public abstract class VisitedLocationMapper {
-    abstract VisitedLocation fromDto(VisitedLocationDto visitedLocationDto);
+public interface VisitedLocationMapper {
+    VisitedLocation fromDto(VisitedLocationDto visitedLocationDto);
 
-    abstract VisitedLocationDto toDto(VisitedLocation visitedLocation);
+    VisitedLocationDto toDto(VisitedLocation visitedLocation);
 
-    public VisitedLocationDto toLastVisitedLocationDto(User user) {
+    default VisitedLocationDto toLastVisitedLocationDto(User user) {
         if (user == null) {
             return null;
         }

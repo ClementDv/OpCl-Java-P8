@@ -21,4 +21,5 @@ public class User {
     private Date latestLocationTimestamp;
     private List<UserReward> userRewards;
     private List<VisitedLocation> visitedLocations;
+    private UserPreferences userPreferences;
 }

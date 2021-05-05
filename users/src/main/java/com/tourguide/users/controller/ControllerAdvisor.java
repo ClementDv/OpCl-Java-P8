@@ -1,6 +1,9 @@
-package com.tourguide.users.exceptions;
+package com.tourguide.users.controller;
 
 import com.tourguide.users.dto.ErrorResponse;
+import com.tourguide.users.exceptions.InvalidUserNameException;
+import com.tourguide.users.exceptions.UserNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +18,7 @@ import static com.tourguide.users.exceptions.ErrorCodesEnum.INVALID_USERNAME;
 import static com.tourguide.users.exceptions.ErrorCodesEnum.USER_NOT_FOUND;
 
 @ControllerAdvice
+@Slf4j
 public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(UserNotFoundException.class)
@@ -41,6 +45,7 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
     protected ResponseEntity<ErrorResponse> response(ErrorResponse errorResponse) {
         HttpStatus status =  HttpStatus.valueOf(errorResponse.getStatus());
+        log.error(errorResponse.getMessage());
         return new ResponseEntity<>(errorResponse, new HttpHeaders(), status);
     }
 }
