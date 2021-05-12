@@ -5,5 +5,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
+    implementation 'org.springdoc:springdoc-openapi-ui'
+    implementation 'io.swagger.core.v3:swagger-annotations'
+
     implementation name: 'gpsUtil'
 }

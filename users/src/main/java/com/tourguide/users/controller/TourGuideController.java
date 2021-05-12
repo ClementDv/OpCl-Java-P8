@@ -6,6 +6,9 @@ import com.tourguide.users.dto.UserRewardDto;
 import com.tourguide.users.dto.VisitedLocationDto;
 import com.tourguide.users.service.TourGuideService;
 import com.tourguide.users.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +19,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @RestController
+@Tag(name = "TourGuideController", description = "Main controller")
 public class TourGuideController {
 
     private final TourGuideService tourGuideService;
@@ -33,8 +37,9 @@ public class TourGuideController {
     }
 
     @GetMapping("/getLocation")
+    @Operation(description = "Get the location from a User")
     public VisitedLocationDto getLocation(
-            @RequestParam String userName
+            @Parameter(name = "User name", description = "Key to find the user", required = true) @RequestParam String userName
     ) {
         return userService.getLastVisitedLocation(userName);
     }

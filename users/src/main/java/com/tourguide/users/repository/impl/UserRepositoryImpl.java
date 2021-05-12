@@ -13,13 +13,18 @@ import java.util.stream.IntStream;
 @Repository
 public class UserRepositoryImpl implements UserRepository {
 
-    private static final int USER_NUMBER_GEN = 2;
+    private static final int USER_NUMBER_GEN_DEFAULT = 10;
     private Random random = new Random(10L);
 
     public Map<String, User> userMap = new HashMap<>();
 
     public UserRepositoryImpl() {
-        IntStream.range(0, USER_NUMBER_GEN).forEach(i -> {
+        setUsersCount(USER_NUMBER_GEN_DEFAULT);
+    }
+
+    public void setUsersCount(int userToGenerate) {
+        userMap.clear();
+        IntStream.range(0, userToGenerate).forEach(i -> {
             String userName = "userName : " + i;
             userMap.put(userName, generateAUser(userName));
         });
@@ -79,7 +84,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     private List<VisitedLocation> generateAVisitedLocationsList(UUID uuid) {
-        return IntStream.range(0, random.nextInt(10))
+        return IntStream.range(0, random.nextInt(3))
                 .mapToObj(i -> generateAVisitedLocation(uuid)).collect(Collectors.toList());
     }
 
@@ -102,7 +107,6 @@ public class UserRepositoryImpl implements UserRepository {
                 .build();
     }
 
-  /*
     private List<UserReward> generateAUserRewardList(UUID uuid) {
         return IntStream.range(0, random.nextInt(10))
                 .mapToObj(i -> UserReward.builder()
@@ -112,8 +116,6 @@ public class UserRepositoryImpl implements UserRepository {
                         .build()
                 ).collect(Collectors.toList());
     }
-
-   */
 
     private Attraction generateAAttraction() {
         return Attraction.builder()

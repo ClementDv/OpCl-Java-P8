@@ -65,7 +65,7 @@ public class RestGpsServiceImpl implements RestGpsService {
         );
 
         if (ArrayUtils.isEmpty(response.getBody())) {
-            log.warn("Gps service warning : No result from gps service for location{}", location);
+            log.info("Gps service : No result found from gps service for location{}", location);
             return Collections.emptyList();
         }
         log.info("Gps service successfully called : Get nearby attractions for location {}", location);

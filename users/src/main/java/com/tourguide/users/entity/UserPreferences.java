@@ -18,6 +18,8 @@ public class UserPreferences {
     private final CurrencyUnit currency = Monetary.getCurrency("USD");
     private final Money lowerPricePoint = Money.of(0, currency);
     private final Money highPricePoint = Money.of(Integer.MAX_VALUE, currency);
+
+    @Builder.Default
     private int tripDuration = 1;
     private final int ticketQuantity = 1;
     private final int numberOfAdults = 1;
