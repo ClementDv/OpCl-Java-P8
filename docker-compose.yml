@@ -1,0 +1,26 @@
+version: '3.9'
+
+services:
+    gps-service:
+      build:
+        context: .
+        target: gps
+      ports:
+      - 8082:8080
+
+    rewards-service:
+      build:
+        context: .
+        target: rewards
+      ports:
+        - 8081:8080
+
+    user-service:
+      build:
+        context: .
+        target: user
+      environment:
+        - GPS_SERVICE_URL=http://gps-service:8082/
+        - REWARDS_SERVICE_URL=http://rewards-service:8081/
+      ports:
+        - 8080:8080
