@@ -1,3 +1,6 @@
-server:
-  port : 8081
+spring:
+  application:
+    name: rewards-app
 
+server:
+  port : '${REWARDS_SERVER_PORT:8081}'

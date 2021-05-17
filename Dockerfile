@@ -1,8 +1,8 @@
 #### Build
-FROM gradle:jdk16-hotspot as build
+FROM gradle:6.9-jdk11-hotspot as build
 
 COPY --chown=gradle:gradle . .
-RUN ./gradlew build -x test
+RUN gradle build -x test --no-daemon
 
 #### Runtime JRE
 
@@ -21,15 +21,15 @@ CMD ["java", "-jar", "tourguide.jar"]
 #### Services
 
 FROM java as user
-COPY --from=build users/build/libs/users.jar tourguide.jar
+COPY --from=build /home/gradle/users/build/libs/users.jar tourguide.jar
 EXPOSE 8080
 
 FROM java as gps
-COPY --from=build gps/build/libs/gps.jar tourguide.jar
+COPY --from=build /home/gradle/gps/build/libs/gps.jar tourguide.jar
 EXPOSE 8081
 
 FROM java as rewards
-COPY --from=build rewards/build/libs/rewards.jar tourguide.jar
+COPY --from=build /home/gradle/rewards/build/libs/rewards.jar tourguide.jar
 EXPOSE 8082
 
 
