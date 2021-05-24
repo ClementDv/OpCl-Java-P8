@@ -35,10 +35,10 @@ public class RestRewardServiceImpl implements RestRewardService {
 
         Integer rewardPoint = response.getBody();
         if (rewardPoint == null || rewardPoint == -1) {
-            log.warn("Reward service warning : wrong response to get attraction Reward point");
+            log.debug("Reward service warning : wrong response to get attraction Reward point");
             return -1;
         }
-        log.info("Reward service successfully called : Get attraction Reward point for attractionId {} and userId {}",
+        log.debug("Reward service successfully called : Get attraction Reward point for attractionId {} and userId {}",
                 attractionId, userId);
         return rewardPoint;
     }

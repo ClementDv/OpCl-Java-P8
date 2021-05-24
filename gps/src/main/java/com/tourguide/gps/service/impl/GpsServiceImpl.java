@@ -65,7 +65,7 @@ public class GpsServiceImpl implements GpsService {
             log.info("Gps service success : get nearby attraction for longitude {}, latitude {}", longitude, latitude);
             return mainStream.collect(Collectors.toList());
         }
-        log.warn("Gps service warning : get nearby attraction for longitude {}, latitude {}", longitude, latitude);
+        log.info("Gps service warning : get nearby attraction for longitude {}, latitude {}", longitude, latitude);
         return Collections.emptyList();
     }
 

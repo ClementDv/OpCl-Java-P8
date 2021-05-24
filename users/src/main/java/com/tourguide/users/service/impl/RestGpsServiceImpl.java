@@ -65,10 +65,10 @@ public class RestGpsServiceImpl implements RestGpsService {
         );
 
         if (ArrayUtils.isEmpty(response.getBody())) {
-            log.info("Gps service : No result found from gps service for location{}", location);
+            log.debug("Gps service : No result found from gps service for location{}", location);
             return Collections.emptyList();
         }
-        log.info("Gps service successfully called : Get nearby attractions for location {}", location);
+        log.debug("Gps service successfully called : Get nearby attractions for location {}", location);
         return Arrays.asList(Objects.requireNonNull(response.getBody()));
     }
 
@@ -83,7 +83,7 @@ public class RestGpsServiceImpl implements RestGpsService {
                 builder.toUriString(),
                 VisitedLocationDto.class
         );
-        log.info("Gps service successfully called : Track a user with userId {}", userId);
+        log.debug("Gps service successfully called : Track a user with userId {}", userId);
         return response.getBody();
     }
 }

@@ -24,7 +24,7 @@ public class RewardsServiceImpl implements RewardsService {
                     attractionId, userId);
             return rewardCentral.getAttractionRewardPoints(attractionId, userId);
         }
-        log.warn("Reward service warning : get attraction reward points for attractionId {} and userId {}",
+        log.info("Reward service warning : get attraction reward points for attractionId {} and userId {}",
                 attractionId, userId);
         return -1;
     }

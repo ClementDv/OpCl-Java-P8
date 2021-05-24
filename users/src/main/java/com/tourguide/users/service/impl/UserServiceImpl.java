@@ -38,14 +38,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public VisitedLocationDto getLastVisitedLocation(String userName) {
         User user = getUserByUsername(userName);
-        log.info("User service success : get last visited location");
+        log.debug("User service success : get last visited location");
         return visitedLocationMapper.toLastVisitedLocationDto(user);
     }
 
     @Override
     public Map<UUID, LocationDto> getAllCurrentLocation() {
         List<User> userList = userRepository.getAllUser();
-        log.info("User service success : get all current location");
+        log.debug("User service success : get all current location");
         return userList.stream()
                 .collect(Collectors.toMap(User::getUserId, e -> visitedLocationMapper.toLastVisitedLocationDto(e).getLocation(), (a, b) -> b));
     }
@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserRewardDto> getUserRewards(String userName) {
         User user = getUserByUsername(userName);
-        log.info("User service success : get user rewards for username {}", userName);
+        log.debug("User service success : get user rewards for username {}", userName);
         return CollectionUtil.notNullOrEmpty(user.getUserRewards())
                 .stream().map(userRewardMapper::toDto).collect(Collectors.toList());
     }

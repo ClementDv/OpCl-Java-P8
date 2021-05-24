@@ -9,10 +9,15 @@ import com.tourguide.users.mapper.VisitedLocationMapper;
 import com.tourguide.users.properties.TrackingProperties;
 import com.tourguide.users.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.time.StopWatch;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 @Slf4j
@@ -37,9 +42,15 @@ public class TrackerService {
         this.attractionMapper = attractionMapper;
     }
 
-    @Scheduled(initialDelay = 5000L, fixedRate = 5000L)
-    public void tracker() {
-        userRepository.getAllUser().forEach(user -> {
+    @Scheduled(initialDelay = 5000L, fixedRate = 300000L)
+    public void tracker() throws ExecutionException, InterruptedException {
+        List<User> userList = userRepository.getAllUser();
+        AtomicInteger usersCounter = new AtomicInteger(0);
+        log.info("Tracking Start. User(s) to track : {}", userList.size());
+        ForkJoinPool pool = new ForkJoinPool(100);
+        StopWatch timeCounter = new StopWatch();
+        timeCounter.start();
+        ForkJoinTask<?> task = pool.submit(() -> userList.parallelStream().forEach(user -> {
             // Track last visited location
 
             VisitedLocation lastVisitedLocation = trackLastLocation(user);
@@ -47,8 +58,39 @@ public class TrackerService {
             // Add Reward from last visited location
 
             addReward(user, lastVisitedLocation);
-            log.info("Tracker : User {} have been successfully tracked", user.getUserName());
-        });
+            usersCounter.incrementAndGet();
+        }));
+        boolean isFinish = false;
+        while (!isFinish) {
+            try {
+                task.get(1, TimeUnit.SECONDS);
+                isFinish = true;
+            } catch (TimeoutException ignored) { // Used to log each seconds
+            }
+            int usersCount = usersCounter.get();
+            long timeMillis = timeCounter.getTime(TimeUnit.MILLISECONDS);
+            logProgress(usersCount, userList.size(), timeMillis);
+        }
+        timeCounter.stop();
+        pool.shutdownNow();
+        log.info("Tracking End. User(s) have been successfully tracked");
+    }
+
+    private void logProgress(int usersCount, int userListSize, long timeSeconds) {
+        double percentageProgress = roundedDecimals((double) usersCount / userListSize * 100);
+        log.info("Tracking progress : {}/{}. [{}%]. Time : {}",
+                usersCount, userListSize, percentageProgress, formatTime(timeSeconds));
+    }
+
+    private String formatTime(long timeMillis) {
+        String time = "";
+        time = time + TimeUnit.MILLISECONDS.toMinutes(timeMillis) + "m";
+        time = time + TimeUnit.MILLISECONDS.toSeconds(timeMillis) % 60 + "s";
+        return time;
+    }
+
+    private double roundedDecimals(double value) {
+        return new BigDecimal(value).setScale(1, RoundingMode.HALF_UP).doubleValue();
     }
 
     public VisitedLocation trackLastLocation(User user) {

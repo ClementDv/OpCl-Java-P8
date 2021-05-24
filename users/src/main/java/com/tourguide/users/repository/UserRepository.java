@@ -10,8 +10,6 @@ public interface UserRepository {
 
     User findUserByUserName(String userName);
 
-    User save(User user);
-
     List<User> getAllUser();
 
     boolean addUserVisitedLocation(String userName, VisitedLocation lastVisitedLocation);

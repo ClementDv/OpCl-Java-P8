@@ -22,7 +22,7 @@ public class UserRepositoryImpl implements UserRepository {
         setUsersCount(USER_NUMBER_GEN_DEFAULT);
     }
 
-    public void setUsersCount(int userToGenerate) {
+    public synchronized void setUsersCount(int userToGenerate) {
         userMap.clear();
         IntStream.range(0, userToGenerate).forEach(i -> {
             String userName = "userName : " + i;
@@ -33,11 +33,6 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public synchronized User findUserByUserName(String userName) {
         return cloneUser(userMap.get(userName));
-    }
-
-    @Override
-    public synchronized User save(User user) {
-        return null;
     }
 
     @Override

@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @RestController
-@Tag(name = "TourGuideController", description = "Main controller")
+@Tag(name = "TourGuideController", description = "Get HTTP requests from users to get all infos they need")
 public class TourGuideController {
 
     private final TourGuideService tourGuideService;
@@ -37,35 +37,39 @@ public class TourGuideController {
     }
 
     @GetMapping("/getLocation")
-    @Operation(description = "Get the location from a User")
+    @Operation(description = "Get the current location from a User")
     public VisitedLocationDto getLocation(
-            @Parameter(name = "User name", description = "Key to find the user", required = true) @RequestParam String userName
+            @Parameter(name = "userName", description = "Name to find the user", required = true) @RequestParam String userName
     ) {
         return userService.getLastVisitedLocation(userName);
     }
 
     @GetMapping("/getAllCurrentLocations")
+    @Operation(description = "Get every current users location")
     public Map<UUID, LocationDto> getAllCurrentLocations() {
         return userService.getAllCurrentLocation();
     }
 
     @GetMapping("/getRewards")
+    @Operation(description = "Get the rewards from a User")
     public List<UserRewardDto> getRewards(
-            @RequestParam String userName
+            @Parameter(name = "userName", description = "Name to find the user") @RequestParam String userName
     ) {
         return userService.getUserRewards(userName);
     }
 
     @GetMapping("/getTripDeals")
+    @Operation(description = "Get the information about the trip of a user")
     public List<Provider> getTripDeals(
-            @RequestParam String userName
+            @Parameter(name = "userName", description = "Name to find the user") @RequestParam String userName
     ) {
         return tourGuideService.getTripDeals(userName);
     }
 
     @GetMapping("/getNearbyAttractions")
+    @Operation(description = "Get 5 closest attractions from a user")
     public List<NearbyAttractionDto> getNearbyAttractions(
-            @RequestParam String userName
+            @Parameter(name = "userName", description = "Name to find the user") @RequestParam String userName
     ) {
         return tourGuideService.getNearbyAttractions(userName);
     }

@@ -38,7 +38,7 @@ public class TourGuideServiceImpl implements TourGuideService {
     @Override
     public List<Provider> getTripDeals(String userName) {
         User user = userService.getUserByUsername(userName);
-        log.info("Tourguide service success : getTripDeals for user : {}", userName);
+        log.debug("Tourguide service success : getTripDeals for user : {}", userName);
         return tripPricerService.getTripDeals(user);
     }
 
@@ -47,14 +47,14 @@ public class TourGuideServiceImpl implements TourGuideService {
         User user = userService.getUserByUsername(userName);
         VisitedLocation userLastVisitedLocation = Iterables.getLast(user.getVisitedLocations());
         if (ObjectUtils.isEmpty(userLastVisitedLocation)) {
-            log.warn("Tourguide service warning : No visited location found for user {}", userName);
+            log.debug("Tourguide service warning : No visited location found for user {}", userName);
             return Collections.emptyList();
         }
         List<NearbyAttractionDto> nearbyAttractionDtoList = restGpsService.getNearbyAttractions(userLastVisitedLocation.getLocation(), 5);
         return nearbyAttractionDtoList.stream().peek(e -> {
             e.setRewardPoints(restRewardService.getAttractionRewardPoint(e.getAttraction().getAttractionId(), user.getUserId()));
             e.setUserLocation(locationMapper.toDto(userLastVisitedLocation.getLocation()));
-            log.info("Tourguide service success : getNearbyAttraction for user {}", userName);
+            log.debug("Tourguide service success : getNearbyAttraction for user {}", userName);
         }).collect(Collectors.toList());
     }
 }

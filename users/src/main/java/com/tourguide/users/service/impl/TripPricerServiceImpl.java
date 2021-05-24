@@ -28,7 +28,7 @@ public class TripPricerServiceImpl implements TripPricerService {
     @Override
     public List<Provider> getTripDeals(User user) {
         int cumulatativeRewardPoints = CollectionUtil.notNullOrEmpty(user.getUserRewards()).stream().mapToInt(UserReward::getRewardPoints).sum();
-        log.info("TripPricer service success: getTripDeals");
+        log.debug("TripPricer service success: getTripDeals");
         return tripPricer.getPrice(
                 tripPricerServiceProperties.getTripPricerApiKey(),
                 user.getUserId(),
