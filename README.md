@@ -9,8 +9,8 @@ The goal is to rise the performance of the application. The tracker have problem
 
 ## Prerequisites
 
-1. Java version 11
-2. Docker
-3. Docker-compose
+1. [Java version 11](https://adoptopenjdk.net/?variant=openjdk15&jvmVariant=hotspot)
+2. [Docker](https://docs.docker.com/get-docker/)
+3. [Docker-compose](https://docs.docker.com/compose/install/)
 
 ## 
