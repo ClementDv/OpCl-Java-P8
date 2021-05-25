@@ -1,6 +1,7 @@
 package com.tourguide.users.controller;
 
 import com.tourguide.users.dto.ErrorResponse;
+import com.tourguide.users.exceptions.InvalidParamExceptions;
 import com.tourguide.users.exceptions.InvalidUserNameException;
 import com.tourguide.users.exceptions.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -14,8 +15,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.util.HashMap;
 
-import static com.tourguide.users.exceptions.ErrorCodesEnum.INVALID_USERNAME;
-import static com.tourguide.users.exceptions.ErrorCodesEnum.USER_NOT_FOUND;
+import static com.tourguide.users.exceptions.ErrorCodesEnum.*;
 
 @ControllerAdvice
 @Slf4j
@@ -43,8 +43,18 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
                 .build());
     }
 
+    @ExceptionHandler(InvalidParamExceptions.class)
+    @ResponseBody
+    public ResponseEntity<?> handleInvalidParamException(InvalidParamExceptions e) {
+        return response(ErrorResponse.builder()
+                .status(INVALID_PARAMETER.getStatus())
+                .code(INVALID_PARAMETER.getCode())
+                .message(e.getMessage())
+                .build());
+    }
+
     protected ResponseEntity<ErrorResponse> response(ErrorResponse errorResponse) {
-        HttpStatus status =  HttpStatus.valueOf(errorResponse.getStatus());
+        HttpStatus status = HttpStatus.valueOf(errorResponse.getStatus());
         log.error(errorResponse.getMessage());
         return new ResponseEntity<>(errorResponse, new HttpHeaders(), status);
     }

@@ -1,6 +1,8 @@
 package com.tourguide.users.repository.impl;
 
 import com.tourguide.users.entity.*;
+import com.tourguide.users.exceptions.InvalidParamExceptions;
+import com.tourguide.users.exceptions.UserNotFoundException;
 import com.tourguide.users.repository.UserRepository;
 import com.tourguide.users.util.CollectionUtil;
 import org.springframework.stereotype.Repository;
@@ -41,27 +43,27 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public synchronized boolean addUserVisitedLocation(String userName, VisitedLocation lastVisitedLocation) {
+    public synchronized void addUserVisitedLocation(String userName, VisitedLocation lastVisitedLocation) {
         if (userName == null || lastVisitedLocation == null) {
-            return false;
+            throw new InvalidParamExceptions();
         }
         User user = userMap.get(userName);
         if (user == null) {
-            return false;
+            throw new UserNotFoundException(userName);
         }
-        return user.getVisitedLocations().add(lastVisitedLocation);
+        user.getVisitedLocations().add(lastVisitedLocation);
     }
 
     @Override
-    public synchronized boolean addUserReward(String userName, UserReward userRewardToAdd) {
+    public synchronized void addUserReward(String userName, UserReward userRewardToAdd) {
         if (userName == null || userRewardToAdd == null) {
-            return false;
+            throw new InvalidParamExceptions();
         }
         User user = userMap.get(userName);
         if (user == null) {
-            return false;
+            throw new UserNotFoundException(userName);
         }
-        return user.getUserRewards().add(userRewardToAdd);
+        user.getUserRewards().add(userRewardToAdd);
     }
 
     private User generateAUser(String userName) {
