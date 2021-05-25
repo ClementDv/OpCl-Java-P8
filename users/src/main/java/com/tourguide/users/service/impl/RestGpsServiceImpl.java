@@ -7,7 +7,6 @@ import com.tourguide.users.properties.GpsServiceProperties;
 import com.tourguide.users.service.RestGpsService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;

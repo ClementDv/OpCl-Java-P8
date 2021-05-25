@@ -42,6 +42,10 @@ public class TrackerService {
         this.attractionMapper = attractionMapper;
     }
 
+    /*
+     Track all user and calculate the reward of each users every 5 minutes
+     */
+
     @Scheduled(initialDelay = 5000L, fixedRate = 300000L)
     public void tracker() throws ExecutionException, InterruptedException {
         List<User> userList = userRepository.getAllUser();
@@ -51,6 +55,7 @@ public class TrackerService {
         StopWatch timeCounter = new StopWatch();
         timeCounter.start();
         ForkJoinTask<?> task = pool.submit(() -> userList.parallelStream().forEach(user -> {
+
             // Track last visited location
 
             VisitedLocation lastVisitedLocation = trackLastLocation(user);
