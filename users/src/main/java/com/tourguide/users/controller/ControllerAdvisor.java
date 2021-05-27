@@ -50,7 +50,8 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
                 .status(INVALID_PARAMETER.getStatus())
                 .code(INVALID_PARAMETER.getCode())
                 .message(e.getMessage())
-                .build());
+                .build()
+        );
     }
 
     protected ResponseEntity<ErrorResponse> response(ErrorResponse errorResponse) {

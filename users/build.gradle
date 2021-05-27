@@ -7,6 +7,7 @@ dependencies {
     implementation 'org.javamoney:moneta'
     implementation 'org.springdoc:springdoc-openapi-ui'
     implementation 'io.swagger.core.v3:swagger-annotations'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     implementation name: 'TripPricer'

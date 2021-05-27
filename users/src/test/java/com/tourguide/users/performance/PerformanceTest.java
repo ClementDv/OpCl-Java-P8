@@ -7,6 +7,9 @@ import com.tourguide.users.service.TrackerService;
 import com.tourguide.users.config.ScheduledConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.StopWatch;
+import org.assertj.core.api.Assert;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,9 +26,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 @SpringBootTest
 @Import(ScheduledConfig.class)
 @Slf4j
+@Disabled("To compile because services need to be launch")
 public class PerformanceTest {
 
-    static final int USERS_NUMBER = 100000;
+    static final int USERS_NUMBER = 1000;
     private final UserRepositoryImpl userRepository;
     private final TrackerService tracker;
 
@@ -37,20 +41,18 @@ public class PerformanceTest {
         this.tracker = tracker;
     }
 
-    // 497 sec / 8 min 17
-
     @Test
     public void TrackerPerformance() throws ExecutionException, InterruptedException {
-        userRepository.setUsersCount(10000);
+        userRepository.setUsersCount(USERS_NUMBER);
 
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         tracker.tracker();
         stopWatch.stop();
         log.info("Execution time of tracking : {}m{}s", stopWatch.getTime(TimeUnit.MINUTES), (stopWatch.getTime(TimeUnit.SECONDS) % 60));
+        Assertions.assertThat(stopWatch.getTime(TimeUnit.SECONDS)).isLessThan(TimeUnit.MINUTES.toSeconds(35));
     }
 
-    /* 11,48 min */
     @Test
     public void TrackLocationPerformance() throws ExecutionException, InterruptedException {
         userRepository.setUsersCount(USERS_NUMBER);
@@ -78,9 +80,9 @@ public class PerformanceTest {
         customThreadPool.shutdownNow();
         stopWatch.stop();
         log.info("Execution time of tracking : {}", formatTime(stopWatch.getTime(TimeUnit.MILLISECONDS)));
+        Assertions.assertThat(stopWatch.getTime(TimeUnit.SECONDS)).isLessThan(TimeUnit.MINUTES.toSeconds(15));
     }
 
-    /* 5,21 min */
     @Test
     public void AddRewardPerformance() throws ExecutionException, InterruptedException {
         userRepository.setUsersCount(USERS_NUMBER);
@@ -108,6 +110,7 @@ public class PerformanceTest {
         customThreadPool.shutdownNow();
         stopWatch.stop();
         log.info("Execution time of tracking : {}", formatTime(stopWatch.getTime(TimeUnit.MILLISECONDS)));
+        Assertions.assertThat(stopWatch.getTime(TimeUnit.SECONDS)).isLessThan(TimeUnit.MINUTES.toSeconds(20));
     }
 
     private void logProgress(int usersCount, int userListSize, long timeSeconds) {
@@ -146,3 +149,4 @@ public class PerformanceTest {
                 .build();
     }
 }
+

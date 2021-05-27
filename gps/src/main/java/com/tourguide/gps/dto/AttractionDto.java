@@ -1,10 +1,7 @@
 package com.tourguide.gps.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.UUID;
 
@@ -25,3 +22,5 @@ public class AttractionDto {
     @Schema(name = "location", description = "The location of the attraction")
     private LocationDto location;
 }
+
+
