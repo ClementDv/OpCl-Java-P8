@@ -26,7 +26,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @SpringBootTest
 @Import(ScheduledConfig.class)
 @Slf4j
-@Disabled("To compile because services need to be launch")
+@Disabled("Services need to be launch")
 public class PerformanceTest {
 
     static final int USERS_NUMBER = 1000;
