@@ -16,8 +16,11 @@ public class RestRewardServiceImpl implements RestRewardService {
 
     private final RewardServiceProperties rewardServiceProperties;
 
-    public RestRewardServiceImpl(RewardServiceProperties rewardServiceProperties) {
+    private final RestTemplate restTemplate;
+
+    public RestRewardServiceImpl(RewardServiceProperties rewardServiceProperties, RestTemplate restTemplate) {
         this.rewardServiceProperties = rewardServiceProperties;
+        this.restTemplate = restTemplate;
     }
 
     @Override
@@ -27,7 +30,6 @@ public class RestRewardServiceImpl implements RestRewardService {
                 .queryParam("attractionId", attractionId)
                 .queryParam("userId", userId);
 
-        RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<Integer> response = restTemplate.getForEntity(
                 builder.toUriString(),
                 int.class

@@ -46,8 +46,9 @@ public class UserServiceImpl implements UserService {
     public Map<UUID, LocationDto> getAllCurrentLocation() {
         List<User> userList = userRepository.getAllUser();
         log.debug("User service success : get all current location");
-        return userList.stream()
-                .collect(Collectors.toMap(User::getUserId, e -> visitedLocationMapper.toLastVisitedLocationDto(e).getLocation(), (a, b) -> b));
+        return CollectionUtil.notNullOrEmpty(userList).stream()
+                .collect(Collectors.toMap(User::getUserId, e -> visitedLocationMapper.toLastVisitedLocationDto(e) == null ? LocationDto.builder().build()
+                        : visitedLocationMapper.toLastVisitedLocationDto(e).getLocation(), (a, b) -> b));
     }
 
     @Override
@@ -63,7 +64,6 @@ public class UserServiceImpl implements UserService {
         if (StringUtils.isBlank(userName)) {
             throw new InvalidUserNameException("UserName is empty or null");
         }
-
         User user = userRepository.findUserByUserName(userName);
         if (Objects.isNull(user)) {
             throw new UserNotFoundException(userName);

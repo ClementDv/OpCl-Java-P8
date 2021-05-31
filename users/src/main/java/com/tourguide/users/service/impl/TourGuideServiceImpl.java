@@ -6,13 +6,14 @@ import com.tourguide.users.entity.User;
 import com.tourguide.users.entity.VisitedLocation;
 import com.tourguide.users.mapper.LocationMapper;
 import com.tourguide.users.service.*;
+import com.tourguide.users.util.CollectionUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
 import tripPricer.Provider;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,16 +46,17 @@ public class TourGuideServiceImpl implements TourGuideService {
     @Override
     public List<NearbyAttractionDto> getNearbyAttractions(String userName) {
         User user = userService.getUserByUsername(userName);
-        VisitedLocation userLastVisitedLocation = Iterables.getLast(user.getVisitedLocations());
-        if (ObjectUtils.isEmpty(userLastVisitedLocation)) {
+        try {
+            VisitedLocation userLastVisitedLocation = Iterables.getLast(CollectionUtil.notNullOrEmpty(user.getVisitedLocations()));
+            List<NearbyAttractionDto> nearbyAttractionDtoList = restGpsService.getNearbyAttractions(userLastVisitedLocation.getLocation(), 5);
+            return nearbyAttractionDtoList.stream().peek(e -> {
+                e.setRewardPoints(restRewardService.getAttractionRewardPoint(e.getAttraction().getAttractionId(), user.getUserId()));
+                e.setUserLocation(locationMapper.toDto(userLastVisitedLocation.getLocation()));
+                log.debug("Tourguide service success : getNearbyAttraction for user {}", userName);
+            }).collect(Collectors.toList());
+        } catch (NoSuchElementException e) {
             log.debug("Tourguide service warning : No visited location found for user {}", userName);
             return Collections.emptyList();
         }
-        List<NearbyAttractionDto> nearbyAttractionDtoList = restGpsService.getNearbyAttractions(userLastVisitedLocation.getLocation(), 5);
-        return nearbyAttractionDtoList.stream().peek(e -> {
-            e.setRewardPoints(restRewardService.getAttractionRewardPoint(e.getAttraction().getAttractionId(), user.getUserId()));
-            e.setUserLocation(locationMapper.toDto(userLastVisitedLocation.getLocation()));
-            log.debug("Tourguide service success : getNearbyAttraction for user {}", userName);
-        }).collect(Collectors.toList());
     }
 }

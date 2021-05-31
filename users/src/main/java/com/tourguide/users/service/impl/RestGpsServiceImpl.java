@@ -20,8 +20,11 @@ public class RestGpsServiceImpl implements RestGpsService {
 
     private final GpsServiceProperties gpsServiceProperties;
 
-    public RestGpsServiceImpl(GpsServiceProperties gpsServiceProperties) {
+    private final RestTemplate restTemplate;
+
+    public RestGpsServiceImpl(GpsServiceProperties gpsServiceProperties, RestTemplate restTemplate) {
         this.gpsServiceProperties = gpsServiceProperties;
+        this.restTemplate = restTemplate;
     }
 
     @Override
@@ -57,7 +60,6 @@ public class RestGpsServiceImpl implements RestGpsService {
         }
 
 
-        RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<NearbyAttractionDto[]> response = restTemplate.getForEntity(
                 builder.toUriString(),
                 NearbyAttractionDto[].class
@@ -77,7 +79,6 @@ public class RestGpsServiceImpl implements RestGpsService {
                 .path("/trackAUser")
                 .queryParam("userId", userId);
 
-        RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<VisitedLocationDto> response = restTemplate.getForEntity(
                 builder.toUriString(),
                 VisitedLocationDto.class
