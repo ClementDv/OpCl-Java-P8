@@ -15,7 +15,7 @@ import java.util.stream.IntStream;
 @Repository
 public class UserRepositoryImpl implements UserRepository {
 
-    private static final int USER_NUMBER_GEN_DEFAULT = 10;
+    private static final int USER_NUMBER_GEN_DEFAULT = 100000;
     private Random random = new Random(10L);
 
     public Map<String, User> userMap = new HashMap<>();

@@ -2,7 +2,7 @@
 FROM gradle:6.9-jdk11-hotspot as build
 
 COPY --chown=gradle:gradle . .
-RUN gradle build -x test --no-daemon
+RUN gradle build --no-daemon
 
 #### Runtime JRE
 

@@ -51,7 +51,7 @@ public class TrackerService {
         List<User> userList = userRepository.getAllUser();
         AtomicInteger usersCounter = new AtomicInteger(0);
         log.info("Tracking Start. User(s) to track : {}", userList.size());
-        ForkJoinPool pool = new ForkJoinPool(100);
+        ForkJoinPool pool = new ForkJoinPool(150);
         StopWatch timeCounter = new StopWatch();
         timeCounter.start();
         ForkJoinTask<?> task = pool.submit(() -> userList.parallelStream().forEach(user -> {
