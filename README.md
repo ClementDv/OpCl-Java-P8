@@ -42,7 +42,9 @@ Compile the application
 
 Run all services
 ```
-
+java -jar users/build/libs/users.jar
+java -jar gps/build/libs/gps.jar
+java -jar rewards/build/libs/rewards.jar
 ```
 
 ## Docs
@@ -58,6 +60,10 @@ Click on the following links while the service is running
 ## Deployement
 
 Overview :
+
+<p>
+  <img src="https://github.com/ClementDv/OpCl-Java-P8/blob/master/.readme/Sch%C3%A9ma%20P8.png?raw=true" alt="Logo"/>
+</p>
 
 Deploy containers
 ```
