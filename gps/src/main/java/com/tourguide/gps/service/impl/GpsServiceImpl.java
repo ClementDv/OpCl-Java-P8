@@ -62,10 +62,10 @@ public class GpsServiceImpl implements GpsService {
             if (limit != null) {
                 mainStream = mainStream.limit(limit);
             }
-            log.info("Gps service success : get nearby attraction for longitude {}, latitude {}", longitude, latitude);
+            log.debug("Gps service success : get nearby attraction for longitude {}, latitude {}", longitude, latitude);
             return mainStream.collect(Collectors.toList());
         }
-        log.info("Gps service warning : get nearby attraction for longitude {}, latitude {}", longitude, latitude);
+        log.debug("Gps service warning : get nearby attraction for longitude {}, latitude {}", longitude, latitude);
         return Collections.emptyList();
     }
 

@@ -1,17 +1,3 @@
-.git/
-
-### Docker configs
-/.dockerignore
-/Dockerfile
-/docker-compose.yml
-
-### Gradle wrapper
-/gradlew
-/gradlew.*
-/gradle/wrapper
-
-
-##### From .gitignore:
 HELP.md
 .gradle
 build/
@@ -177,4 +163,3 @@ gradle-app.setting
 **/build/
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij,gradle
-

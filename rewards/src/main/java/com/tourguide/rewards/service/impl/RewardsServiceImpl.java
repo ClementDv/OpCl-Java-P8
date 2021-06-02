@@ -20,11 +20,11 @@ public class RewardsServiceImpl implements RewardsService {
     @Override
     public int getAttractionRewardPoints(UUID attractionId, UUID userId) {
         if (attractionId != null && userId != null) {
-            log.info("Reward service success : get attraction reward points for attractionId {} and userId {}",
+            log.debug("Reward service success : get attraction reward points for attractionId {} and userId {}",
                     attractionId, userId);
             return rewardCentral.getAttractionRewardPoints(attractionId, userId);
         }
-        log.info("Reward service warning : get attraction reward points for attractionId {} and userId {}",
+        log.debug("Reward service warning : get attraction reward points for attractionId {} and userId {}",
                 attractionId, userId);
         return -1;
     }
