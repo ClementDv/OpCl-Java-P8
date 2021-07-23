@@ -49,7 +49,7 @@ java -jar rewards/build/libs/rewards.jar
 
 ## Docs
 
-Click on the following links while the service is running
+Click on the following links while the services are running
 
 **Tourguide / users**: http://localhost:8080/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
 
